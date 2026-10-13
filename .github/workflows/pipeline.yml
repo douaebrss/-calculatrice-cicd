@@ -36,20 +36,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir dist && cp calculatrice.py dist/
+      - name: Construire l'image Docker
+        run: docker build -t calculatrice:latest .
+      - name: Tester l'image Docker
+        run: docker run --rm calculatrice:latest
       - uses: actions/upload-artifact@v4
         with:
           name: calculatrice-paquet
           path: dist/
 
   deploy:
-    name: Déploiement (simulé)
+    name: Déploiement (GitHub Pages)
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
-          name: calculatrice-paquet
-          path: dist/
-      - run: ls -l dist/
-      - run: echo "Application déployée avec succès !"
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
