@@ -1,4 +1,5 @@
 name: Pipeline CI/CD Calculatrice
+
 on:
   push:
     branches: [main]
@@ -26,7 +27,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: pytest -v
+      - run: pytest -v --cov=calculatrice --cov-report=term-missing
 
   build:
     name: Construction du paquet
