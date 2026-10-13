@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculatrice CI/CD</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 420px; margin: 40px auto; padding: 0 16px; }
+    h1 { font-size: 1.4rem; }
+    input, select, button { font-size: 1rem; padding: 8px; margin: 4px 0; width: 100%; box-sizing: border-box; }
+    #resultat { margin-top: 12px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Calculatrice (déployée par la pipeline)</h1>
+  <input id="a" type="number" placeholder="a">
+  <select id="op">
+    <option value="+">addition</option>
+    <option value="-">soustraction</option>
+    <option value="*">multiplication</option>
+    <option value="/">division</option>
+    <option value="**">puissance</option>
+  </select>
+  <input id="b" type="number" placeholder="b">
+  <button onclick="calculer()">Calculer</button>
+  <p id="resultat"></p>
+  <script>
+    function calculer() {
+      var a = parseFloat(document.getElementById("a").value);
+      var b = parseFloat(document.getElementById("b").value);
+      var op = document.getElementById("op").value;
+      var r;
+      if (isNaN(a) || isNaN(b)) { r = "Entrez deux nombres."; }
+      else if (op === "+") { r = a + b; }
+      else if (op === "-") { r = a - b; }
+      else if (op === "*") { r = a * b; }
+      else if (op === "**") { r = Math.pow(a, b); }
+      else if (b === 0) { r = "Division par zéro impossible"; }
+      else { r = a / b; }
+      document.getElementById("resultat").textContent = "Résultat : " + r;
+    }
+  </script>
+</body>
+</html>
